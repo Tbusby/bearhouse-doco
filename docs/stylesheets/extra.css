@@ -1,0 +1,19 @@
+.md-grid {
+    max-width: 1600px;
+}
+
+.mermaid {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.mermaid svg {
+    width: 100% !important;
+    height: auto !important;
+}
+
+.md-content__inner {
+    overflow-x: auto;
+}
