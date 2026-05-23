@@ -50,3 +50,55 @@
     padding: 0.1rem;
     margin-right: 0.2rem;
 }
+
+.md-header__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+/* General links */
+.md-typeset a {
+    color: #7CC4FF;
+}
+
+/* Link hover */
+.md-typeset a:hover {
+    color: #A8D8FF;
+}
+
+/* Navigation links */
+.md-nav__link {
+    color: #D6E2F0;
+}
+
+/* Navigation hover */
+.md-nav__link:hover {
+    color: #7CC4FF;
+}
+
+/* Active navigation item */
+.md-nav__link--active {
+    color: #7CC4FF !important;
+    font-weight: 700;
+}
+
+.md-typeset h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #E6EDF7;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #16355f;
+    padding-bottom: 0.3rem;
+}
+
+.md-typeset h2 {
+    color: #D6E2F0;
+    font-weight: 700;
+}
+
+.md-typeset h3 {
+    color: #B6C2D9;
+    font-weight: 600;
+}
