@@ -24,7 +24,7 @@ theme:
 #     logo: material/teddy-bear
   logo: assets/bearhouse-logo.png
   palette: 
-    - scheme: slate
+      scheme: slate
       primary: custom
       accent: custom
   language: en
