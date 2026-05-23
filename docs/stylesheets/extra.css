@@ -1,3 +1,23 @@
+:root {
+    --md-primary-fg-color: #0B2344;
+    --md-primary-fg-color--light: #16355f;
+    --md-primary-fg-color--dark: #07172d;
+
+    --md-accent-fg-color: #4DA3FF;
+
+    --md-default-bg-color: #0F172A;
+    --md-default-bg-color--light: #172033;
+
+    --md-default-fg-color: #E6EDF7;
+    --md-default-fg-color--light: #B6C2D9;
+    --md-default-fg-color--lighter: #7F8CA3;
+
+    --md-code-bg-color: #111827;
+    --md-code-fg-color: #D6E2F0;
+
+    --md-typeset-a-color: #7CC4FF;
+}
+
 .md-grid {
     max-width: 1600px;
 }
@@ -16,4 +36,17 @@
 
 .md-content__inner {
     overflow-x: auto;
+}
+
+/* Make logo area bigger */
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+    height: 2rem;
+    width: 2rem;
+}
+
+/* Optional: reduce padding around logo */
+.md-header__button.md-logo {
+    padding: 0.1rem;
+    margin-right: 0.2rem;
 }
