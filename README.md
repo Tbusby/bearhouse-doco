@@ -1,6 +1,8 @@
-# bearhouse-docs
+# bearhouse-doco
 
 Documentation repository for a production-shaped homelab platform focused on learning and demonstrating modern DevOps, SRE, and platform engineering practices.
+
+<https://tbusby.github.io/bearhouse-doco/>
 
 ## Purpose
 
