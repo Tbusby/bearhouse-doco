@@ -82,6 +82,9 @@ nav:
       - Observability: operations/observability.md
       - Backup & Recovery: operations/backup-recovery.md
       - Patching & Upgrades: operations/patching-upgrades.md
+      - Initial Setup:
+          - Proxmox Setup: operations/initial-setup/proxmox-setup.md
+          - Proxmox Short Runbook: operations/initial-setup/proxmox-short-runbook.md
   - Runbooks:
       - Runbooks Index: runbooks/index.md
       - Runbook Template: runbooks/000-template.md
