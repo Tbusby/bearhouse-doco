@@ -69,6 +69,7 @@ nav:
   - Infrastructure:
       - Proxmox: infrastructure/proxmox.md
       - Virtual Machines: infrastructure/virtual-machines.md
+      - Ubuntu 2404 Cloud Init Template: infrastructure/ubuntu-cloud-image-template.md
       - Networking: infrastructure/networking.md
       - Storage: infrastructure/storage.md
       - Security Baseline: infrastructure/security-baseline.md
@@ -83,7 +84,7 @@ nav:
       - Backup & Recovery: operations/backup-recovery.md
       - Patching & Upgrades: operations/patching-upgrades.md
       - Initial Setup:
-          - Proxmox Setup: operations/initial-setup/proxmox-setup.md
+        #   - Proxmox Setup: operations/initial-setup/proxmox-setup.md
           - Proxmox Short Runbook: operations/initial-setup/proxmox-short-runbook.md
   - Runbooks:
       - Runbooks Index: runbooks/index.md

@@ -4,13 +4,13 @@
 
 | VM Name | Role | vCPU | RAM | Disk |
 |---------|------|------|-----|------|
-| k8s-cp1 | Control plane 1 | 2 | 4 GB | 40 GB |
-| k8s-cp2 | Control plane 2 | 2 | 4 GB | 40 GB |
-| k8s-cp3 | Control plane 3 | 2 | 4 GB | 40 GB |
+| k8s-cp1 | Control plane 1 | 2 | 4 GB | 20 GB |
+| k8s-cp2 | Control plane 2 | 2 | 4 GB | 20 GB |
+| k8s-cp3 | Control plane 3 | 2 | 4 GB | 20 GB |
 | k8s-w1 | Worker 1 | 4 | 8 GB | 80 GB |
 | k8s-w2 | Worker 2 | 4 | 8 GB | 80 GB |
 | k8s-w3 | Worker 3 | 4 | 8 GB | 80 GB |
-| ops1 | Management / jump host | 2 | 4 GB | 40 GB |
+| ops1 | Management / jump host | 2 | 4 GB | 20 GB |
 | svc1 | Utility / NFS | 2 | 4 GB | 100 GB |
 
 ## Design Rationale
@@ -32,3 +32,6 @@ This supports:
 - base VM template created in Proxmox
 - VMs provisioned by Terraform
 - OS configuration applied by Ansible
+
+## ops1 
+ops1 is the central management and automation host for the homelab platform. It is used for infrastructure provisioning, configuration management, cluster administration, documentation workflows, and operational tooling.
