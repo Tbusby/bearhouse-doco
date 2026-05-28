@@ -8,7 +8,7 @@ theme:
   features:
     - navigation.tabs
     - navigation.tabs.sticky
-    - navigation.sections
+    # - navigation.sections
     - navigation.expand
     - navigation.top
     - navigation.instant
@@ -16,7 +16,7 @@ theme:
     - navigation.instant.prefetch
     - navigation.tracking
     - navigation.path
-    - toc.integrate
+    # - toc.integrate
     - content.code.copy
     - search.suggest
     - search.highlight

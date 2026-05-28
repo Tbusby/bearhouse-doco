@@ -3,7 +3,7 @@
 ## VM Inventory
 
 | VM Name | Role | vCPU | RAM | Disk |
-|---------|------|------|-----|------|
+| ------- | ---- | ---- | --- | ---- |
 | k8s-cp1 | Control plane 1 | 2 | 4 GB | 20 GB |
 | k8s-cp2 | Control plane 2 | 2 | 4 GB | 20 GB |
 | k8s-cp3 | Control plane 3 | 2 | 4 GB | 20 GB |
@@ -16,12 +16,14 @@
 ## Design Rationale
 
 The VM design separates:
+
 - Kubernetes control plane
 - worker capacity
 - management tooling
 - shared utility services
 
 This supports:
+
 - clearer operational boundaries
 - easier troubleshooting
 - realistic platform structure
@@ -33,5 +35,6 @@ This supports:
 - VMs provisioned by Terraform
 - OS configuration applied by Ansible
 
-## ops1 
+## ops1
+
 ops1 is the central management and automation host for the homelab platform. It is used for infrastructure provisioning, configuration management, cluster administration, documentation workflows, and operational tooling.
