@@ -15,6 +15,7 @@
 ## Scope
 
 GitOps should manage:
+
 - namespaces
 - platform services
 - application deployments
@@ -31,6 +32,7 @@ GitOps should manage:
 ## Future Notes
 
 This document should later include:
+
 - root app pattern
 - app-of-apps or ApplicationSet strategy
 - repo structure for manifests

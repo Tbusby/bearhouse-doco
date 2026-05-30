@@ -14,11 +14,13 @@ Use an NFS server VM and `nfs-subdir-external-provisioner` for initial Kubernete
 ## Consequences
 
 ### Positive
+
 - simple and reliable
 - easy to understand and back up
 - good fit for single-host constraints
 
 ### Negative
+
 - not cloud-native distributed storage
 - no host-level resilience
 

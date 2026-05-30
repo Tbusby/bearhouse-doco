@@ -9,6 +9,7 @@ Documentation repository for a production-shaped homelab platform focused on lea
 This repository contains the documentation for a homelab environment built to use industry-standard tooling and workflows where practical.
 
 The goal is to treat the lab as a production-like platform:
+
 - designed intentionally
 - automated where possible
 - documented thoroughly

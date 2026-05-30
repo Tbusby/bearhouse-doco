@@ -33,6 +33,7 @@ Because the environment runs on a single physical host, it is not physically HA.
 ## Bootstrap Approach
 
 Cluster bootstrap should be:
+
 - documented
 - repeatable
 - partially or fully automated using Ansible where practical

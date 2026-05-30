@@ -14,6 +14,7 @@ All non-emergency changes should follow this flow:
 ## Manual Changes
 
 Manual changes are discouraged except:
+
 - during initial bootstrap
 - during incident response
 - for temporary testing that will later be captured in code
@@ -21,6 +22,7 @@ Manual changes are discouraged except:
 ## Documentation Requirement
 
 Significant changes should update:
+
 - architecture docs
 - runbooks
 - ADRs where appropriate

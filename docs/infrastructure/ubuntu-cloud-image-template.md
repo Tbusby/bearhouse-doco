@@ -24,7 +24,7 @@ This template is the default starting point for:
 ## Template Summary
 
 | Item | Value |
-|------|-------|
+| ---- | ----- |
 | Template Name | `ubuntu-2404-cloudinit-template` |
 | Template VM ID | `100` |
 | Operating System | Ubuntu Server 24.04 LTS |
@@ -59,7 +59,7 @@ Key design goals:
 ### Compute
 
 | Setting | Value |
-|---------|-------|
+| ------- | ----- |
 | CPU Type | `host` |
 | vCPU | 2 |
 | Memory | 2048 MB |
@@ -67,7 +67,7 @@ Key design goals:
 ### Storage
 
 | Setting | Value |
-|---------|-------|
+| ------- | ----- |
 | Main Disk Bus | `SCSI` |
 | SCSI Controller | `VirtIO SCSI single` |
 | Main Disk Size | 20 GB |
@@ -78,7 +78,7 @@ Key design goals:
 ### Network
 
 | Setting | Value |
-|---------|-------|
+| ------- | ----- |
 | NIC Model | `VirtIO` |
 | Bridge | `vmbr0` |
 | Default IP Assignment | DHCP |
@@ -86,7 +86,7 @@ Key design goals:
 ### Console and Agent
 
 | Setting | Value |
-|---------|-------|
+| ------- | ----- |
 | Serial Port | Enabled |
 | Display | Serial terminal |
 | QEMU Guest Agent | Enabled |
@@ -100,7 +100,7 @@ The template uses Proxmox cloud-init integration to apply per-VM customization d
 ### Default Cloud-Init Settings
 
 | Setting | Value |
-|---------|-------|
+| ------- | ----- |
 | User | `tbusby` |
 | Authentication | SSH public key |
 | IP Config | DHCP |
@@ -176,7 +176,7 @@ Validation outcome:
 This template is approved for creating the following VM types:
 
 | VM Type | Supported |
-|---------|-----------|
+| ------- | --------- |
 | Management VM | Yes |
 | Kubernetes Control Plane Node | Yes |
 | Kubernetes Worker Node | Yes |

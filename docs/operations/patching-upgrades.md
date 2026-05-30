@@ -10,6 +10,7 @@
 ## Scope
 
 This applies to:
+
 - Proxmox
 - Ubuntu guest VMs
 - Kubernetes versions
@@ -20,6 +21,7 @@ This applies to:
 ## Future Content
 
 This document should later include:
+
 - maintenance windows
 - pre-upgrade checklist
 - rollback notes

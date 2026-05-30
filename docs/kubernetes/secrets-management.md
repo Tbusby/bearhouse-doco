@@ -3,6 +3,7 @@
 ## Approach
 
 Secrets are stored in Git in encrypted form using:
+
 - SOPS
 - age
 
@@ -21,6 +22,7 @@ Secrets are stored in Git in encrypted form using:
 ## Future Options
 
 Potential future enhancements:
+
 - External Secrets Operator
 - Vault
 - cloud secret backends

@@ -22,7 +22,7 @@ Applies to the initial Proxmox VE installation on the dedicated homelab host.
 ## Planned Values
 
 | Item | Value |
-|------|-------|
+| ---- | ----- |
 | Hostname | `proxmox01` |
 | Management IP | `<fill in>` |
 | Gateway | `<fill in>` |

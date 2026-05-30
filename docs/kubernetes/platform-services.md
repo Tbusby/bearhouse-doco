@@ -18,16 +18,20 @@ The initial platform service set includes:
 ## Service Categories
 
 ### Delivery
+
 - Argo CD
 
 ### Networking
+
 - MetalLB
 - ingress-nginx
 
 ### Security and Certificates
+
 - cert-manager
 
 ### Observability
+
 - metrics-server
 - Prometheus
 - Grafana
@@ -35,6 +39,7 @@ The initial platform service set includes:
 - Loki
 
 ### Storage
+
 - NFS provisioner
 
 ## Deployment Model

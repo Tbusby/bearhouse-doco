@@ -32,6 +32,7 @@
 ## CI Security Controls
 
 CI should include:
+
 - Trivy scanning
 - linting
 - manifest validation

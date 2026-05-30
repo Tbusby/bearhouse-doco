@@ -11,6 +11,7 @@
 ## Delivery Model
 
 CI is responsible for:
+
 - validation
 - linting
 - testing
@@ -19,6 +20,7 @@ CI is responsible for:
 - documentation builds
 
 CD is responsible for:
+
 - reconciling Kubernetes state from Git
 
 ## Example CI Responsibilities

@@ -20,7 +20,7 @@ This design keeps the platform simple while the core infrastructure and cluster 
 ## Current Network Model
 
 | Network Component | Value | Notes |
-|------------------|-------|-------|
+| ---------------- | ----- | ----- |
 | Physical uplink | `enp2s0f0` | Active Proxmox host uplink |
 | Secondary NIC | `enp2s0f1` | Present but currently unused |
 | Proxmox bridge | `vmbr0` | Main host and VM bridge |
@@ -34,7 +34,7 @@ This design keeps the platform simple while the core infrastructure and cluster 
 ## Proxmox Host Networking
 
 | Interface | Type | Role | Address / CIDR | Gateway | Bridge | Notes |
-|-----------|------|------|----------------|---------|--------|-------|
+| --------- | ---- | ---- | -------------- | ------- | ------ | ----- |
 | `lo` | Loopback | Local host loopback | `127.0.0.1/8` | None | None | Standard loopback interface |
 | `enp2s0f0` | Physical NIC | Uplink for Proxmox bridge | None | None | `vmbr0` | Active physical interface connected to LAN |
 | `enp2s0f1` | Physical NIC | Unused / standby | None | None | None | Available for future use |
@@ -47,7 +47,7 @@ This design keeps the platform simple while the core infrastructure and cluster 
 The current IP allocation follows a role-based layout within the `192.168.1.0/24` subnet.
 
 | Range / Address | Purpose | Notes |
-|-----------------|---------|-------|
+| --------------- | ------- | ----- |
 | `192.168.1.10` | Proxmox host | Hypervisor management |
 | `192.168.1.20` | Reserved | Planned Kubernetes API virtual endpoint |
 | `192.168.1.21-23` | Kubernetes control planes | `k8s-cp1` to `k8s-cp3` |
@@ -61,7 +61,7 @@ The current IP allocation follows a role-based layout within the `192.168.1.0/24
 ## Current VM Network Inventory
 
 | Hostname | Role | VM ID | IP Address | Network Mode | Bridge | Notes |
-|----------|------|-------|------------|--------------|--------|-------|
+| -------- | ---- | ----- | ---------- | ------------ | ------ | ----- |
 | `ops1` | Management / automation host | `401` | `192.168.1.41` | Static via cloud-init | `vmbr0` | Terraform, Git, admin tooling |
 | `k8s-cp1` | Kubernetes control plane | `201` | `192.168.1.21` | Static via cloud-init | `vmbr0` | First control plane node |
 | `k8s-cp2` | Kubernetes control plane | `202` | `192.168.1.22` | Static via cloud-init | `vmbr0` | Second control plane node |
@@ -75,7 +75,7 @@ The current IP allocation follows a role-based layout within the `192.168.1.0/24
 ## Planned but Not Yet Active Addresses
 
 | Hostname / Purpose | Planned IP | Status | Notes |
-|--------------------|------------|--------|-------|
+| ------------------ | ---------- | ------ | ----- |
 | `k8s-api` | `192.168.1.20` | Reserved | Planned stable Kubernetes API endpoint |
 | `svc1` | `192.168.1.42` | Reserved | Planned utility or storage VM |
 | MetalLB pool | `192.168.1.200-210` | Reserved | Planned service exposure range for Kubernetes |

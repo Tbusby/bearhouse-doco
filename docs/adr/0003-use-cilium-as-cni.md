@@ -14,11 +14,13 @@ Use Cilium as the Kubernetes CNI.
 ## Consequences
 
 ### Positive
+
 - modern and widely adopted
 - strong NetworkPolicy support
 - useful for learning current Kubernetes networking patterns
 
 ### Negative
+
 - somewhat more advanced than simpler alternatives
 - may introduce additional concepts early
 

@@ -14,11 +14,13 @@ Use SOPS with age for encrypting secrets stored in Git.
 ## Consequences
 
 ### Positive
+
 - simple and effective
 - Git-friendly
 - avoids introducing Vault too early
 
 ### Negative
+
 - key management still requires discipline
 - not a full centralized secrets platform
 

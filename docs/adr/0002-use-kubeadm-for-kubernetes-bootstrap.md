@@ -14,11 +14,13 @@ Use kubeadm to bootstrap the Kubernetes cluster.
 ## Consequences
 
 ### Positive
+
 - closer to upstream Kubernetes
 - better learning value for control plane architecture
 - teaches foundational Kubernetes setup concepts
 
 ### Negative
+
 - more operational complexity than lightweight distributions
 - requires more setup and maintenance effort
 

@@ -14,10 +14,12 @@ State the decision clearly.
 ## Consequences
 
 ### Positive
+
 - Item
 - Item
 
 ### Negative
+
 - Item
 - Item
 

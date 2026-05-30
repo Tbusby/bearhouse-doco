@@ -32,6 +32,7 @@ The platform consists of the following layers:
 ## Constraints
 
 Because the platform runs on a single physical host:
+
 - true infrastructure HA is not possible
 - host failure causes full outage
 - resilience is achieved through reproducibility, automation, and backups
@@ -39,7 +40,7 @@ Because the platform runs on a single physical host:
 ## Selected Technologies
 
 | Category | Technology |
-|----------|------------|
+| -------- | ---------- |
 | Hypervisor | Proxmox VE |
 | Guest OS | Ubuntu Server 24.04 LTS |
 | Kubernetes bootstrap | kubeadm |

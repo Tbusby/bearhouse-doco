@@ -3,6 +3,7 @@
 ## Everything as Code
 
 Where practical, all components should be defined as code:
+
 - infrastructure in Terraform
 - operating system configuration in Ansible
 - Kubernetes resources in Git
@@ -12,6 +13,7 @@ Where practical, all components should be defined as code:
 ## Git as Source of Truth
 
 Git repositories are the authoritative source for:
+
 - infrastructure definitions
 - configuration
 - application deployment manifests
@@ -31,6 +33,7 @@ Systems should be replaceable and reproducible. Rebuilding a node should be easi
 ## Secure by Default
 
 Security should be part of the design:
+
 - SSH key-based access
 - no plaintext secrets in Git
 - least privilege where practical

@@ -83,16 +83,20 @@ nav:
       - Observability: operations/observability.md
       - Backup & Recovery: operations/backup-recovery.md
       - Patching & Upgrades: operations/patching-upgrades.md
+      - Configuration Management: operations/config-management.md
+      - Node Bootstrap: operations/node-bootstrap.md
       - Initial Setup:
         #   - Proxmox Setup: operations/initial-setup/proxmox-setup.md
           - Proxmox Short Runbook: operations/initial-setup/proxmox-short-runbook.md
   - Runbooks:
       - Runbooks Index: runbooks/index.md
       - Runbook Template: runbooks/000-template.md
+      - Ansible Config Management: runbooks/001-ansible.md
   - Standards:
       - Naming Standards: standards/naming-standards.md
       - Repository Structure: standards/repository-structure.md
       - Change Management: standards/change-management.md
+      - Ansible Repository Structure: standards/ansible-repo-structure.md
   - ADRs:
       - ADR Index: adr/index.md
       - ADR Template: adr/0000-template.md

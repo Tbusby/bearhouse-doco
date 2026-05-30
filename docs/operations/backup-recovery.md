@@ -10,17 +10,21 @@
 ## Backup Strategy
 
 ### Offsite Target
+
 - AWS S3 bucket dedicated to homelab backups
 
 ### Primary Backup Tool
+
 - restic
 
 ### Secondary Learning Tool
+
 - Velero
 
 ## Backup Scope
 
 Back up:
+
 - NFS data from `svc1`
 - selected configuration exports
 - backup keys in secure form

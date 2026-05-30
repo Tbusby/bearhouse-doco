@@ -15,6 +15,7 @@
 ## Goals
 
 The platform should provide visibility into:
+
 - node health
 - pod health
 - cluster resource usage

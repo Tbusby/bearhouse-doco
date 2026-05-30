@@ -14,11 +14,13 @@ Use GitHub Actions for CI and Argo CD for continuous delivery.
 ## Consequences
 
 ### Positive
+
 - industry-relevant toolchain
 - clear separation between CI and CD responsibilities
 - strong GitOps support
 
 ### Negative
+
 - requires managing multiple tools
 - introduces dependency on external Git hosting
 

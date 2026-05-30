@@ -23,6 +23,7 @@
 ## Namespace Names
 
 Examples:
+
 - `argocd`
 - `ingress`
 - `networking`
