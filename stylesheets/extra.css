@@ -1,0 +1,104 @@
+:root {
+    --md-primary-fg-color: #0B2344;
+    --md-primary-fg-color--light: #16355f;
+    --md-primary-fg-color--dark: #07172d;
+
+    --md-accent-fg-color: #4DA3FF;
+
+    --md-default-bg-color: #0F172A;
+    --md-default-bg-color--light: #172033;
+
+    --md-default-fg-color: #E6EDF7;
+    --md-default-fg-color--light: #B6C2D9;
+    --md-default-fg-color--lighter: #7F8CA3;
+
+    --md-code-bg-color: #111827;
+    --md-code-fg-color: #D6E2F0;
+
+    --md-typeset-a-color: #7CC4FF;
+}
+
+.md-grid {
+    max-width: 1600px;
+}
+
+.mermaid {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.mermaid svg {
+    width: 100% !important;
+    height: auto !important;
+}
+
+.md-content__inner {
+    overflow-x: auto;
+}
+
+/* Make logo area bigger */
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+    height: 2rem;
+    width: 2rem;
+}
+
+/* Optional: reduce padding around logo */
+.md-header__button.md-logo {
+    padding: 0.1rem;
+    margin-right: 0.2rem;
+}
+
+.md-header__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+/* General links */
+.md-typeset a {
+    color: #7CC4FF;
+}
+
+/* Link hover */
+.md-typeset a:hover {
+    color: #A8D8FF;
+}
+
+/* Navigation links */
+.md-nav__link {
+    color: #D6E2F0;
+}
+
+/* Navigation hover */
+.md-nav__link:hover {
+    color: #7CC4FF;
+}
+
+/* Active navigation item */
+.md-nav__link--active {
+    color: #7CC4FF !important;
+    font-weight: 700;
+}
+
+.md-typeset h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #E6EDF7;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #16355f;
+    padding-bottom: 0.3rem;
+}
+
+.md-typeset h2 {
+    color: #D6E2F0;
+    font-weight: 700;
+}
+
+.md-typeset h3 {
+    color: #B6C2D9;
+    font-weight: 600;
+}

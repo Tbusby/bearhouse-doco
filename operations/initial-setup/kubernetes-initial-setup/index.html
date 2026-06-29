@@ -1,0 +1,3965 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Production-shaped homelab architecture and operations documentation">
+      
+      
+        <meta name="author" content="Tom Busby">
+      
+      
+        <link rel="canonical" href="https://tbusby.github.io/bearhouse-doco/operations/initial-setup/kubernetes-initial-setup/">
+      
+      
+        <link rel="prev" href="../proxmox-short-runbook/">
+      
+      
+        <link rel="next" href="../../../runbooks/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Kubernetes Initial Setup - Bearhouse Doco</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kubernetes-cluster-bootstrap-design" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Bearhouse Doco" class="md-header__button md-logo" aria-label="Bearhouse Doco" data-md-component="logo">
+      
+  <img src="../../../assets/bearhouse-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Bearhouse Doco
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Kubernetes Initial Setup
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../architecture/overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../infrastructure/proxmox/" class="md-tabs__link">
+          
+  
+  
+  Infrastructure
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../kubernetes/cluster-design/" class="md-tabs__link">
+          
+  
+  
+  Kubernetes
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../ci-cd/" class="md-tabs__link">
+          
+  
+  
+  Operations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../runbooks/" class="md-tabs__link">
+          
+  
+  
+  Runbooks
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../standards/naming-standards/" class="md-tabs__link">
+          
+  
+  
+  Standards
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../adr/" class="md-tabs__link">
+          
+  
+  
+  ADRs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../blog/" class="md-tabs__link">
+          
+  
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Bearhouse Doco" class="md-nav__button md-logo" aria-label="Bearhouse Doco" data-md-component="logo">
+      
+  <img src="../../../assets/bearhouse-logo.png" alt="logo">
+
+    </a>
+    Bearhouse Doco
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/principles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Principles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/decisions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisions Summary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diagrams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Infrastructure
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../infrastructure/proxmox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Proxmox
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../infrastructure/virtual-machines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Virtual Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../infrastructure/ubuntu-cloud-image-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ubuntu 2404 Cloud Init Template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../infrastructure/networking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Networking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../infrastructure/storage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../infrastructure/security-baseline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Baseline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Kubernetes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kubernetes/cluster-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cluster Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kubernetes/platform-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform Services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kubernetes/gitops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kubernetes/secrets-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Secrets Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Operations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ci-cd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI/CD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../observability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Observability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backup-recovery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backup & Recovery
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../patching-upgrades/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Patching & Upgrades
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../config-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../node-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Node Bootstrap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5_7" id="__nav_5_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Initial Setup
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Initial Setup
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../proxmox-short-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Proxmox Short Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes Initial Setup
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes Initial Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Goals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constraints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-node-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Node Inventory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bootstrap-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bootstrap Strategy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bootstrap Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-manual-bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1: Manual bootstrap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-automated-bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2: Automated bootstrap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Decisions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubernetes-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kubernetes Distribution
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kubernetes Distribution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rationale
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Container Runtime
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Container Runtime">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rationale_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rationale
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cni-choice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CNI Choice
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CNI Choice">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rationale_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rationale
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Note
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-api-endpoint-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster API Endpoint Strategy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cluster API Endpoint Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#planned-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned endpoint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#planned-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned implementation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rationale
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#note_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Note
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#network-plan-for-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Plan for Kubernetes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Network Plan for Kubernetes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#node-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node network
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#planned-api-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned API endpoint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#planned-metallb-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned MetalLB pool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design note
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#planned-kubernetes-network-ranges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned Kubernetes Network Ranges
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Planned Kubernetes Network Ranges">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#planned-pod-cidr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned pod CIDR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#planned-service-cidr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned service CIDR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-note_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design note
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#planned-bootstrap-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned Bootstrap Order
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bootstrap-responsibilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bootstrap Responsibilities
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#manual-bootstrap-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual Bootstrap Scope
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Manual Bootstrap Scope">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explicit-non-goals-for-the-first-bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Explicit non-goals for the first bootstrap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validation-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation Criteria
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-automation-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future Automation Plan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-platform-steps-after-bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future Platform Steps After Bootstrap
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open Decisions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#success-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Success Criteria
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related Documents
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runbooks
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Runbooks
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../runbooks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runbooks Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../runbooks/000-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runbook Template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../runbooks/001-ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ansible Config Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../runbooks/002-kubernetes-init/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes Init
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../runbooks/003-rebuild-ops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rebuild ops1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standards
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Standards
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../standards/naming-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Naming Standards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../standards/repository-structure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Repository Structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../standards/change-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Change Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../standards/ansible-repo-structure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ansible Repository Structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADRs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ADRs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr/0000-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR Template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr/0001-use-proxmox-as-hypervisor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0001 Proxmox
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr/0002-use-kubeadm-for-kubernetes-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0002 kubeadm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr/0003-use-cilium-as-cni/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0003 Cilium
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr/0004-use-nfs-for-initial-persistent-storage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0004 NFS Storage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr/0005-use-github-actions-and-argocd-for-delivery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0005 GitHub Actions + Argo CD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr/0006-use-sops-and-age-for-secrets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0006 SOPS + age
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Blog
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_2" id="__nav_9_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archive
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/archive/2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_3" id="__nav_9_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Categories
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Categories
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/homelab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Homelab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Goals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constraints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-node-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Node Inventory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bootstrap-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bootstrap Strategy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bootstrap Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-manual-bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1: Manual bootstrap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-automated-bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2: Automated bootstrap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Decisions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubernetes-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kubernetes Distribution
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kubernetes Distribution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rationale
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Container Runtime
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Container Runtime">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rationale_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rationale
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cni-choice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CNI Choice
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CNI Choice">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rationale_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rationale
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Note
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-api-endpoint-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster API Endpoint Strategy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cluster API Endpoint Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#planned-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned endpoint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#planned-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned implementation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rationale
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#note_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Note
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#network-plan-for-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Plan for Kubernetes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Network Plan for Kubernetes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#node-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node network
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#planned-api-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned API endpoint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#planned-metallb-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned MetalLB pool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design note
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#planned-kubernetes-network-ranges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned Kubernetes Network Ranges
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Planned Kubernetes Network Ranges">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#planned-pod-cidr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned pod CIDR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#planned-service-cidr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned service CIDR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-note_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design note
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#planned-bootstrap-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned Bootstrap Order
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bootstrap-responsibilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bootstrap Responsibilities
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#manual-bootstrap-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual Bootstrap Scope
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Manual Bootstrap Scope">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explicit-non-goals-for-the-first-bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Explicit non-goals for the first bootstrap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validation-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation Criteria
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-automation-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future Automation Plan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-platform-steps-after-bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future Platform Steps After Bootstrap
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open Decisions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#success-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Success Criteria
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related Documents
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../ci-cd/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Operations
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../proxmox-short-runbook/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Initial Setup
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="kubernetes-cluster-bootstrap-design">Kubernetes Cluster Bootstrap Design<a class="headerlink" href="#kubernetes-cluster-bootstrap-design" title="Permanent link">&para;</a></h1>
+<h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
+<p>This document defines the planned bootstrap approach for the homelab Kubernetes cluster.</p>
+<p>The goal of this phase is to move from prepared Ubuntu virtual machines to a functioning multi-node Kubernetes cluster using a production-shaped bootstrap process that is educational, repeatable, and aligned with industry-standard tooling.</p>
+<p>The cluster will be bootstrapped manually first to deepen understanding of Kubernetes control plane initialization, node join workflows, networking, and core cluster architecture. Once the process is understood and documented, it can be automated using Ansible.</p>
+<hr />
+<h2 id="goals">Goals<a class="headerlink" href="#goals" title="Permanent link">&para;</a></h2>
+<p>The Kubernetes bootstrap process should:</p>
+<ul>
+<li>use industry-standard Kubernetes bootstrap tooling</li>
+<li>provide hands-on understanding of how a multi-node cluster is formed</li>
+<li>support a multi-control-plane architecture for learning HA concepts</li>
+<li>remain realistic for a single-host homelab</li>
+<li>produce a documented and repeatable bootstrap procedure</li>
+<li>prepare the platform for later GitOps, ingress, storage, and observability work</li>
+</ul>
+<hr />
+<h2 id="constraints">Constraints<a class="headerlink" href="#constraints" title="Permanent link">&para;</a></h2>
+<p>The cluster is deployed on a single physical Proxmox host.</p>
+<p>Because of this:</p>
+<ul>
+<li>true infrastructure high availability is not possible</li>
+<li>host outage causes full cluster outage</li>
+<li>control plane redundancy is educational and operationally useful, but not physically fault tolerant</li>
+</ul>
+<p>This design therefore focuses on:</p>
+<ul>
+<li>correct architectural patterns</li>
+<li>recoverability</li>
+<li>reproducibility</li>
+<li>realistic bootstrap flow</li>
+</ul>
+<p>rather than claiming full physical HA.</p>
+<hr />
+<h2 id="cluster-summary">Cluster Summary<a class="headerlink" href="#cluster-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bootstrap tool</td>
+<td><code>kubeadm</code></td>
+</tr>
+<tr>
+<td>Runtime</td>
+<td><code>containerd</code></td>
+</tr>
+<tr>
+<td>CNI</td>
+<td>Planned: <code>Cilium</code></td>
+</tr>
+<tr>
+<td>Control plane nodes</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Worker nodes</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Host OS</td>
+<td>Ubuntu Server 24.04 LTS</td>
+</tr>
+<tr>
+<td>Provisioning</td>
+<td>Terraform</td>
+</tr>
+<tr>
+<td>Configuration management</td>
+<td>Ansible</td>
+</tr>
+<tr>
+<td>Initial bootstrap method</td>
+<td>Manual</td>
+</tr>
+<tr>
+<td>Future bootstrap method</td>
+<td>Ansible-assisted</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="current-node-inventory">Current Node Inventory<a class="headerlink" href="#current-node-inventory" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Hostname</th>
+<th>Role</th>
+<th>IP Address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>k8s-cp1</code></td>
+<td>Control plane</td>
+<td><code>192.168.1.21</code></td>
+</tr>
+<tr>
+<td><code>k8s-cp2</code></td>
+<td>Control plane</td>
+<td><code>192.168.1.22</code></td>
+</tr>
+<tr>
+<td><code>k8s-cp3</code></td>
+<td>Control plane</td>
+<td><code>192.168.1.23</code></td>
+</tr>
+<tr>
+<td><code>k8s-w1</code></td>
+<td>Worker</td>
+<td><code>192.168.1.31</code></td>
+</tr>
+<tr>
+<td><code>k8s-w2</code></td>
+<td>Worker</td>
+<td><code>192.168.1.32</code></td>
+</tr>
+<tr>
+<td><code>k8s-w3</code></td>
+<td>Worker</td>
+<td><code>192.168.1.33</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="bootstrap-strategy">Bootstrap Strategy<a class="headerlink" href="#bootstrap-strategy" title="Permanent link">&para;</a></h2>
+<p>The bootstrap approach is intentionally split into two phases:</p>
+<h3 id="phase-1-manual-bootstrap">Phase 1: Manual bootstrap<a class="headerlink" href="#phase-1-manual-bootstrap" title="Permanent link">&para;</a></h3>
+<p>The first cluster build will be performed manually in order to learn:</p>
+<ul>
+<li><code>kubeadm init</code></li>
+<li>cluster certificate and token handling</li>
+<li>control plane join flow</li>
+<li>worker join flow</li>
+<li>CNI installation</li>
+<li>kubeconfig handling</li>
+<li>cluster validation and troubleshooting</li>
+</ul>
+<h3 id="phase-2-automated-bootstrap">Phase 2: Automated bootstrap<a class="headerlink" href="#phase-2-automated-bootstrap" title="Permanent link">&para;</a></h3>
+<p>Once the manual process is documented and understood, it will be translated into Ansible-based automation.</p>
+<p>This staged approach avoids automating a process before it is well understood.</p>
+<hr />
+<h2 id="architecture-decisions">Architecture Decisions<a class="headerlink" href="#architecture-decisions" title="Permanent link">&para;</a></h2>
+<h2 id="kubernetes-distribution">Kubernetes Distribution<a class="headerlink" href="#kubernetes-distribution" title="Permanent link">&para;</a></h2>
+<p>The cluster will use upstream-style Kubernetes bootstrapped with <code>kubeadm</code>.</p>
+<h3 id="rationale">Rationale<a class="headerlink" href="#rationale" title="Permanent link">&para;</a></h3>
+<ul>
+<li>closer to real-world Kubernetes operations</li>
+<li>teaches control plane initialization details</li>
+<li>widely used learning and production-adjacent workflow</li>
+<li>aligns with the platform engineering and DevOps learning goals of the lab</li>
+</ul>
+<hr />
+<h2 id="container-runtime">Container Runtime<a class="headerlink" href="#container-runtime" title="Permanent link">&para;</a></h2>
+<p>The cluster uses:</p>
+<ul>
+<li><code>containerd</code></li>
+</ul>
+<h3 id="rationale_1">Rationale<a class="headerlink" href="#rationale_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>modern standard Kubernetes runtime</li>
+<li>already installed as part of node preparation</li>
+<li>production-relevant</li>
+<li>appropriate for kubeadm-based clusters</li>
+</ul>
+<hr />
+<h2 id="cni-choice">CNI Choice<a class="headerlink" href="#cni-choice" title="Permanent link">&para;</a></h2>
+<p>Planned CNI:</p>
+<ul>
+<li><code>Cilium</code></li>
+</ul>
+<h3 id="rationale_2">Rationale<a class="headerlink" href="#rationale_2" title="Permanent link">&para;</a></h3>
+<ul>
+<li>modern and widely adopted</li>
+<li>strong policy support</li>
+<li>production-relevant networking model</li>
+<li>useful for future NetworkPolicy and observability learning</li>
+</ul>
+<h3 id="note">Note<a class="headerlink" href="#note" title="Permanent link">&para;</a></h3>
+<p>The exact Cilium installation method will be documented during the implementation phase.</p>
+<hr />
+<h2 id="cluster-api-endpoint-strategy">Cluster API Endpoint Strategy<a class="headerlink" href="#cluster-api-endpoint-strategy" title="Permanent link">&para;</a></h2>
+<p>A stable Kubernetes API endpoint is required for a multi-control-plane kubeadm cluster.</p>
+<h3 id="planned-endpoint">Planned endpoint<a class="headerlink" href="#planned-endpoint" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API endpoint name</td>
+<td><code>k8s-api</code></td>
+</tr>
+<tr>
+<td>Planned IP</td>
+<td><code>192.168.1.20</code></td>
+</tr>
+<tr>
+<td>Planned role</td>
+<td>Stable control plane endpoint</td>
+</tr>
+</tbody>
+</table>
+<h3 id="planned-implementation">Planned implementation<a class="headerlink" href="#planned-implementation" title="Permanent link">&para;</a></h3>
+<p>The preferred planned approach is:</p>
+<ul>
+<li><code>kube-vip</code></li>
+</ul>
+<h3 id="rationale_3">Rationale<a class="headerlink" href="#rationale_3" title="Permanent link">&para;</a></h3>
+<ul>
+<li>commonly used in kubeadm homelab and bare-metal setups</li>
+<li>appropriate for educational HA control plane scenarios</li>
+<li>avoids introducing a separate dedicated load balancer VM at this stage</li>
+</ul>
+<h3 id="note_1">Note<a class="headerlink" href="#note_1" title="Permanent link">&para;</a></h3>
+<p>If <code>kube-vip</code> proves unnecessarily complex for the first cluster bootstrap, the first bootstrap may temporarily use <code>k8s-cp1</code> directly and later evolve to a stable virtual endpoint. If this occurs, the implementation and rationale should be documented.</p>
+<hr />
+<h2 id="network-plan-for-kubernetes">Network Plan for Kubernetes<a class="headerlink" href="#network-plan-for-kubernetes" title="Permanent link">&para;</a></h2>
+<h3 id="node-network">Node network<a class="headerlink" href="#node-network" title="Permanent link">&para;</a></h3>
+<p>All nodes currently exist on the primary LAN subnet:</p>
+<ul>
+<li><code>192.168.1.0/24</code></li>
+</ul>
+<h3 id="planned-api-endpoint">Planned API endpoint<a class="headerlink" href="#planned-api-endpoint" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>192.168.1.20</code></li>
+</ul>
+<h3 id="planned-metallb-pool">Planned MetalLB pool<a class="headerlink" href="#planned-metallb-pool" title="Permanent link">&para;</a></h3>
+<p>Reserved for later service exposure:</p>
+<ul>
+<li><code>192.168.1.200-210</code></li>
+</ul>
+<h3 id="design-note">Design note<a class="headerlink" href="#design-note" title="Permanent link">&para;</a></h3>
+<p>Kubernetes node traffic currently shares the same bridged LAN as the rest of the lab infrastructure. This is acceptable for the current single-host homelab design.</p>
+<hr />
+<h2 id="planned-kubernetes-network-ranges">Planned Kubernetes Network Ranges<a class="headerlink" href="#planned-kubernetes-network-ranges" title="Permanent link">&para;</a></h2>
+<p>These values should be finalized before <code>kubeadm init</code>.</p>
+<h3 id="planned-pod-cidr">Planned pod CIDR<a class="headerlink" href="#planned-pod-cidr" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>10.244.0.0/16</code> or another CNI-appropriate range</li>
+</ul>
+<h3 id="planned-service-cidr">Planned service CIDR<a class="headerlink" href="#planned-service-cidr" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>10.96.0.0/12</code></li>
+</ul>
+<h3 id="design-note_1">Design note<a class="headerlink" href="#design-note_1" title="Permanent link">&para;</a></h3>
+<p>The final pod CIDR must match the chosen CNI installation parameters. This value should be confirmed before initializing the cluster.</p>
+<hr />
+<h2 id="planned-bootstrap-order">Planned Bootstrap Order<a class="headerlink" href="#planned-bootstrap-order" title="Permanent link">&para;</a></h2>
+<p>The planned bootstrap order is:</p>
+<ol>
+<li>Confirm all nodes are reachable and correctly prepared</li>
+<li>Confirm required packages and runtime are installed</li>
+<li>Prepare stable control plane endpoint strategy</li>
+<li>Initialize first control plane on <code>k8s-cp1</code></li>
+<li>Configure <code>kubectl</code> access on the bootstrap node</li>
+<li>Install CNI</li>
+<li>Join additional control planes:</li>
+<li><code>k8s-cp2</code></li>
+<li><code>k8s-cp3</code></li>
+<li>Join worker nodes:</li>
+<li><code>k8s-w1</code></li>
+<li><code>k8s-w2</code></li>
+<li><code>k8s-w3</code></li>
+<li>Validate cluster node health</li>
+<li>Validate DNS, networking, and scheduling</li>
+</ol>
+<hr />
+<h2 id="bootstrap-responsibilities">Bootstrap Responsibilities<a class="headerlink" href="#bootstrap-responsibilities" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Tool</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VM provisioning</td>
+<td>Terraform</td>
+</tr>
+<tr>
+<td>OS preparation</td>
+<td>Ansible</td>
+</tr>
+<tr>
+<td>Cluster initialization</td>
+<td>Manual (initially)</td>
+</tr>
+<tr>
+<td>Future repeat automation</td>
+<td>Ansible</td>
+</tr>
+<tr>
+<td>Workload deployment</td>
+<td>Later GitOps / Kubernetes manifests</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="manual-bootstrap-scope">Manual Bootstrap Scope<a class="headerlink" href="#manual-bootstrap-scope" title="Permanent link">&para;</a></h2>
+<p>The first manual bootstrap should include:</p>
+<ul>
+<li>preparing the <code>kubeadm init</code> configuration</li>
+<li>running <code>kubeadm init</code> on <code>k8s-cp1</code></li>
+<li>configuring <code>kubectl</code></li>
+<li>generating and using join commands</li>
+<li>joining additional control plane nodes</li>
+<li>joining worker nodes</li>
+<li>installing and validating CNI</li>
+<li>testing the basic cluster state</li>
+</ul>
+<h3 id="explicit-non-goals-for-the-first-bootstrap">Explicit non-goals for the first bootstrap<a class="headerlink" href="#explicit-non-goals-for-the-first-bootstrap" title="Permanent link">&para;</a></h3>
+<p>The first bootstrap does not need to include:</p>
+<ul>
+<li>ingress</li>
+<li>MetalLB</li>
+<li>storage provisioner</li>
+<li>monitoring stack</li>
+<li>GitOps platform</li>
+<li>advanced policy or admission control</li>
+</ul>
+<p>These should follow after the base cluster is healthy.</p>
+<hr />
+<h2 id="validation-criteria">Validation Criteria<a class="headerlink" href="#validation-criteria" title="Permanent link">&para;</a></h2>
+<p>The bootstrap will be considered successful when:</p>
+<ul>
+<li>all 3 control plane nodes join successfully</li>
+<li>all 3 worker nodes join successfully</li>
+<li>all nodes report <code>Ready</code></li>
+<li>the CNI is healthy</li>
+<li>cluster DNS functions correctly</li>
+<li>pods can schedule to worker nodes</li>
+<li><code>kubectl get nodes</code> and <code>kubectl get pods -A</code> show expected healthy state</li>
+</ul>
+<hr />
+<h2 id="risks">Risks<a class="headerlink" href="#risks" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Incorrect API endpoint design</td>
+<td>Control plane join failures</td>
+<td>Finalize endpoint design before init</td>
+</tr>
+<tr>
+<td>Pod CIDR mismatch with CNI</td>
+<td>Broken networking</td>
+<td>Validate CNI requirements before bootstrap</td>
+</tr>
+<tr>
+<td>Incomplete node preparation</td>
+<td>kubeadm failures</td>
+<td>Validate Ansible prerequisites before bootstrap</td>
+</tr>
+<tr>
+<td>Manual bootstrap errors</td>
+<td>Delays or partial cluster state</td>
+<td>Document commands carefully and proceed in order</td>
+</tr>
+<tr>
+<td>Single host outage</td>
+<td>Full outage</td>
+<td>Accept as design constraint; rely on rebuildability</td>
+</tr>
+<tr>
+<td>Certificate/join token confusion</td>
+<td>Join failures</td>
+<td>Capture and document commands during bootstrap</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="documentation-requirements">Documentation Requirements<a class="headerlink" href="#documentation-requirements" title="Permanent link">&para;</a></h2>
+<p>During the first manual bootstrap, the following should be recorded:</p>
+<ul>
+<li>exact <code>kubeadm init</code> command or config file used</li>
+<li>chosen API endpoint method</li>
+<li>chosen pod and service CIDRs</li>
+<li>CNI installation command or manifest source</li>
+<li>exact join commands used</li>
+<li>any issues encountered and their resolutions</li>
+<li>final validation commands and outputs</li>
+</ul>
+<p>This documentation will form the basis of later Ansible automation.</p>
+<hr />
+<h2 id="future-automation-plan">Future Automation Plan<a class="headerlink" href="#future-automation-plan" title="Permanent link">&para;</a></h2>
+<p>After the manual bootstrap is complete and validated, the process should be translated into Ansible automation.</p>
+<p>Likely future automation areas include:</p>
+<ul>
+<li>rendering <code>kubeadm</code> config files</li>
+<li>running <code>kubeadm init</code></li>
+<li>distributing kubeconfig</li>
+<li>generating and executing join commands</li>
+<li>installing CNI</li>
+<li>post-bootstrap validation tasks</li>
+</ul>
+<p>The initial automation should aim for:</p>
+<ul>
+<li>clarity</li>
+<li>repeatability</li>
+<li>minimal hidden logic</li>
+</ul>
+<hr />
+<h2 id="future-platform-steps-after-bootstrap">Future Platform Steps After Bootstrap<a class="headerlink" href="#future-platform-steps-after-bootstrap" title="Permanent link">&para;</a></h2>
+<p>Once the cluster is healthy, the likely next platform phases are:</p>
+<ol>
+<li>install CNI if not already complete</li>
+<li>install metrics-server</li>
+<li>install MetalLB</li>
+<li>install ingress-nginx</li>
+<li>install cert-manager</li>
+<li>install storage provisioner</li>
+<li>install observability stack</li>
+<li>install Argo CD</li>
+</ol>
+<hr />
+<h2 id="open-decisions">Open Decisions<a class="headerlink" href="#open-decisions" title="Permanent link">&para;</a></h2>
+<p>The following items should be finalized before the first cluster bootstrap:</p>
+<ul>
+<li>final API endpoint implementation (<code>kube-vip</code> or temporary direct bootstrap)</li>
+<li>final pod CIDR</li>
+<li>final service CIDR</li>
+<li>exact Cilium installation method</li>
+<li>whether initial <code>kubectl</code> administration lives temporarily on <code>k8s-cp1</code>, <code>ops1</code>, or both</li>
+</ul>
+<hr />
+<h2 id="success-criteria">Success Criteria<a class="headerlink" href="#success-criteria" title="Permanent link">&para;</a></h2>
+<p>This design will be considered successfully implemented when:</p>
+<ul>
+<li>the cluster can be bootstrapped manually from the documented procedure</li>
+<li>the resulting cluster is healthy and usable</li>
+<li>the bootstrap process is captured clearly enough to automate later with Ansible</li>
+<li>the design remains aligned with the intended production-shaped learning goals of the homelab</li>
+</ul>
+<hr />
+<h2 id="related-documents">Related Documents<a class="headerlink" href="#related-documents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../kubernetes/cluster-design.md">Cluster Design</a></li>
+<li><a href="../operations/node-bootstrap.md">Node Bootstrap</a></li>
+<li><a href="../operations/configuration-management.md">Configuration Management</a></li>
+<li><a href="../infrastructure/networking.md">Network Plan</a></li>
+<li><a href="../runbooks/run-ansible-configuration-management.md">Run Ansible Configuration Management</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "navigation.top", "navigation.instant", "navigation.instant.progress", "navigation.instant.prefetch", "navigation.tracking", "navigation.path", "content.code.copy", "search.suggest", "search.highlight"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+        <script src="../../../javascripts/mermaid-init.js"></script>
+      
+    
+  </body>
+</html>
