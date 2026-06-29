@@ -93,6 +93,8 @@ nav:
       - Runbooks Index: runbooks/index.md
       - Runbook Template: runbooks/000-template.md
       - Ansible Config Management: runbooks/001-ansible.md
+      - Kubernetes Init: runbooks/002-kubernetes-init.md
+      - Rebuild ops1: runbooks/003-rebuild-ops.md
   - Standards:
       - Naming Standards: standards/naming-standards.md
       - Repository Structure: standards/repository-structure.md
