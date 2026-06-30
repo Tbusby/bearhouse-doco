@@ -73,6 +73,8 @@ nav:
       - Networking: infrastructure/networking.md
       - Storage: infrastructure/storage.md
       - Security Baseline: infrastructure/security-baseline.md
+      - ops1 Admin Node: infrastructure/ops1-admin-node.md 
+      - Secrets Management: infrastructure/secrets-management.md
   - Kubernetes:
       - Cluster Design: kubernetes/cluster-design.md
       - Platform Services: kubernetes/platform-services.md

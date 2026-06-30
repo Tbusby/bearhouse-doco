@@ -297,24 +297,37 @@ After the playbook completes, SSH into `ops1` and verify the expected tooling is
 
 ```bash
 git --version
+ssh -T git@github.com
+cd ~
+git clone git@github.com:Tbusby/bearhouse-infra-ansible.git
+git clone git@github.com:Tbusby/bearhouse-infra-proxmox.git
 ```
 
 ### Verify Terraform
 
 ```bash
+cd /home/labadmin/bearhouse-infra-proxmox
 terraform version
+terraform plan
 ```
 
 ### Verify Ansible
 
 ```bash
+cd /home/labadmin/bearhouse-infra-ansible
 ansible --version
+ansible all -m ping
+ansible-inventory --graph
 ```
 
 ### Verify SOPS
 
+Manually copy the sops-age key file from a backup to -
+`$HOME/.conf/sops/age/keys.txt`
+
 ```bash
 sops --version
+sops /home/labadmin/bearhouse-infra-ansible/group_vars/ops/kubeconfig.sops.yaml
 ```
 
 ### Verify age
@@ -323,19 +336,16 @@ sops --version
 age --version
 ```
 
-### Verify Kubernetes admin tooling if expected
+### Verify Kubernetes admin tooling
 
 ```bash
 kubectl version --client
+kubectl get nodes
+kubectl get pods -A
+helm version
+helm ls -A
+cilium status
 ```
-
-### Verify Git SSH access if configured
-
-```bash
-ssh -T git@github.com
-```
-
-Adjust this test if you use another Git host.
 
 ---
 
@@ -352,7 +362,7 @@ Recommended checks before switching back:
 - [ ] SOPS decryption works
 - [ ] expected SSH keys are present
 - [ ] required repositories are cloned and current
-- [ ] kubeconfig and cluster admin tools are available if expected
+- [ ] kubeconfig and cluster admin tools are available as expected
 
 ---
 
@@ -366,7 +376,7 @@ The rebuild is considered successful when:
 - Ansible can run from `ops1`
 - SOPS can decrypt the required files from `ops1`
 - Git operations work from `ops1`
-- expected admin tooling is present and functional
+- Expected kubernetes admin tooling is present and functional
 
 ---
 
