@@ -80,6 +80,12 @@ nav:
       - Platform Services: kubernetes/platform-services.md
       - GitOps: kubernetes/gitops.md
       - Secrets Management: kubernetes/secrets-management.md
+      - Initial Setup:
+          - Kubernetes Initial Setup: kubernetes/initial-setup/kubernetes-initial-setup.md
+          - Kubernetes Metrics Server: kubernetes/initial-setup/kubernetes-metrics-server.md
+          - MetalLB install: kubernetes/initial-setup/metallb.md
+          - Ingress-nginx: kubernetes/initial-setup/ingress-nginx.md
+          - Certificate Management: kubernetes/initial-setup/certificate-manager.md
   - Operations:
       - CI/CD: operations/ci-cd.md
       - Observability: operations/observability.md
@@ -90,7 +96,6 @@ nav:
       - Initial Setup:
         #   - Proxmox Setup: operations/initial-setup/proxmox-setup.md
           - Proxmox Short Runbook: operations/initial-setup/proxmox-short-runbook.md
-          - Kubernetes Initial Setup: operations/initial-setup/kubernetes-initial-setup.md
   - Runbooks:
       - Runbooks Index: runbooks/index.md
       - Runbook Template: runbooks/000-template.md
@@ -111,6 +116,9 @@ nav:
       - ADR-0004 NFS Storage: adr/0004-use-nfs-for-initial-persistent-storage.md
       - ADR-0005 GitHub Actions + Argo CD: adr/0005-use-github-actions-and-argocd-for-delivery.md
       - ADR-0006 SOPS + age: adr/0006-use-sops-and-age-for-secrets.md
+      - ADR-0007 MetalLB: adr/0007-melatllb.md
+      - ADR-0008 Ingress-Nginx: adr/0008-ingress-nginx.md
+      - ADR-0009 Cert Manager: adr/0009-cert-manager.md
   - Blog:
     - blog/index.md
     
