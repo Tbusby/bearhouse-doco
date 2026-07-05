@@ -75,6 +75,7 @@ nav:
       - Security Baseline: infrastructure/security-baseline.md
       - ops1 Admin Node: infrastructure/ops1-admin-node.md 
       - Secrets Management: infrastructure/secrets-management.md
+      - Observability: infrastructure/observability.md
   - Kubernetes:
       - Cluster Design: kubernetes/cluster-design.md
       - Platform Services: kubernetes/platform-services.md
@@ -119,6 +120,7 @@ nav:
       - ADR-0007 MetalLB: adr/0007-melatllb.md
       - ADR-0008 Ingress-Nginx: adr/0008-ingress-nginx.md
       - ADR-0009 Cert Manager: adr/0009-cert-manager.md
+      - ADR-0010 Prometheus & Grafana: adr/0010-kube-prometheus-stack.md
   - Blog:
     - blog/index.md
     

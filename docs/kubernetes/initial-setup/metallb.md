@@ -304,4 +304,3 @@ The current-state documentation for MetalLB should clearly record:
 - the exact address pool used
 - that the pool is reserved and non-overlapping
 - that a test `LoadBalancer` Service was successfully validated from another LAN client
-
