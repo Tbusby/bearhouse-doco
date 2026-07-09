@@ -127,6 +127,9 @@ nav:
       - ADR-0009 Cert Manager: adr/0009-cert-manager.md
       - ADR-0010 Prometheus & Grafana: adr/0010-kube-prometheus-stack.md
       - ADR-0011 k8s Storage: adr/0011-k8s-storage.md
+  - Improvements:
+      - Changelog: improvements/changelog.md
+      - Backlog: improvements/backlog.md
   - Blog:
     - blog/index.md
     
