@@ -28,9 +28,9 @@ The platform should prefer:
 
 | Area | Preferred Recovery Method | Notes |
 | ---- | ------------------------- | ----- |
-| Terraform-managed infrastructure | Rebuild from code | [git@github.com:Tbusby/bearhouse-infra-proxmox.git] |
-| Ansible-managed configuration | Rebuild from code | [git@github.com:Tbusby/bearhouse-infra-ansible.git] |
-| Documentation | Restore from Git | [git@github.com:Tbusby/bearhouse-doco.git] |
+| Terraform-managed infrastructure | Rebuild from code | <https://github.com/Tbusby/bearhouse-infra-proxmox.git> |
+| Ansible-managed configuration | Rebuild from code | <https://github.com/Tbusby/bearhouse-infra-ansible.git> |
+| Documentation | Restore from Git | <https://github.com/Tbusby/bearhouse-doco.git> |
 | GitOps-managed apps | Rebuild from Git | Fill in details |
 | Kubernetes cluster state | Fill in | Decide rebuild vs restore |
 | Persistent NFS-backed data | Restore from backup | Fill in details |
