@@ -35,8 +35,6 @@ Recommended values:
 | Date | Type | Area | Change | Summary | Related Docs / ADRs |
 | ---- | ---- | ---- | ------ | ------- | ------------------- |
 | YYYY-MM-DD | Added | Example Area | Example change title | Short summary of what changed and why it mattered | Example page / ADR |
-| YYYY-MM-DD | Changed | Example Area | Example configuration update | Short summary of the update and operational impact | Example page |
-| YYYY-MM-DD | Fixed | Example Area | Example issue resolved | Short summary of the issue and how it was resolved | Example runbook |
 
 ## Notes
 
