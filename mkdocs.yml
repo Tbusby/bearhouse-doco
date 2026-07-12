@@ -98,6 +98,7 @@ nav:
       - Patching & Upgrades: operations/patching-upgrades.md
       - Configuration Management: operations/config-management.md
       - Node Bootstrap: operations/node-bootstrap.md
+      - Backup & Recovery Plan: operations/backup-recovery-plan.md
       - Initial Setup:
         #   - Proxmox Setup: operations/initial-setup/proxmox-setup.md
           - Proxmox Short Runbook: operations/initial-setup/proxmox-short-runbook.md
