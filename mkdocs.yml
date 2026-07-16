@@ -111,6 +111,7 @@ nav:
       - Rebuild ops1: runbooks/003-rebuild-ops.md
       - ArgoCD: runbooks/004-argocd.md
       - NFS Backup: runbooks/005-nfs-backup.md
+      - Node Exporter on Proxmox: runbooks/006--node-exporter-proxmox.md
   - Standards:
       - Naming Standards: standards/naming-standards.md
       - Repository Structure: standards/repository-structure.md
