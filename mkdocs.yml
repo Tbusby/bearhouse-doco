@@ -78,6 +78,7 @@ nav:
       - Observability: infrastructure/observability.md
       - Kubernetes Storage: infrastructure/k8s-storage.md
       - ArgoCD and GitOps: infrastructure/argocd-gitops.md
+      - NFS Backups: infrastructure/nfs-backup.md
   - Kubernetes:
       - Cluster Design: kubernetes/cluster-design.md
       - Platform Services: kubernetes/platform-services.md
@@ -109,6 +110,7 @@ nav:
       - Kubernetes Init: runbooks/002-kubernetes-init.md
       - Rebuild ops1: runbooks/003-rebuild-ops.md
       - ArgoCD: runbooks/004-argocd.md
+      - NFS Backup: runbooks/005-nfs-backup.md
   - Standards:
       - Naming Standards: standards/naming-standards.md
       - Repository Structure: standards/repository-structure.md

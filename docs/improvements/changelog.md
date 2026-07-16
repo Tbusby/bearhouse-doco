@@ -35,6 +35,7 @@ Recommended values:
 | Date | Type | Area | Change | Summary | Related Docs / ADRs |
 | ---- | ---- | ---- | ------ | ------- | ------------------- |
 | YYYY-MM-DD | Added | Example Area | Example change title | Short summary of what changed and why it mattered | Example page / ADR |
+| 2026-07-16 | Added | Backup / Storage | Implemented local NFS backup workflow | Added scheduled NFS backup from `storage1` to the Proxmox backup disk using timestamped rsync hard-link snapshots, retention cleanup, file logging, and basic failure alerting | Architecture: NFS Backup / Runbook: NFS Backup Job |
 
 ## Notes
 
